@@ -21,8 +21,8 @@ def main():
     node = Node("ex_pose_goal")
 
     # Declare parameters for position and orientation
-    node.declare_parameter("position", [0.5, 0.0, 0.25])
-    node.declare_parameter("quat_xyzw", [1.0, 0.0, 0.0, 0.0])
+    node.declare_parameter("position", [-0.2, -0.2, 0.5])
+    node.declare_parameter("quat_xyzw", [0.0, 1.0, 0.0, 0.0])
     node.declare_parameter("cartesian", False)
 
     # Create callback group that allows execution of callbacks in parallel without restrictions

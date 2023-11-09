@@ -46,10 +46,10 @@ class MoveIt2:
         base_link_name: str,
         end_effector_name: str,
         group_name: str = "arm",
-        execute_via_moveit: bool = False,
+        execute_via_moveit: bool = True,
         ignore_new_calls_while_executing: bool = False,
         callback_group: Optional[CallbackGroup] = None,
-        follow_joint_trajectory_action_name: str = "joint_trajectory_controller/follow_joint_trajectory",
+        follow_joint_trajectory_action_name: str = "/xarm5_traj_controller/follow_joint_trajectory",
     ):
         """
         Construct an instance of `MoveIt2` interface.
@@ -1183,7 +1183,7 @@ class MoveIt2:
         # move_action_goal.request.planner_id = "Ignored"
         move_action_goal.request.group_name = group_name
         move_action_goal.request.num_planning_attempts = 5
-        move_action_goal.request.allowed_planning_time = 0.5
+        move_action_goal.request.allowed_planning_time = 6.0
         move_action_goal.request.max_velocity_scaling_factor = 0.0
         move_action_goal.request.max_acceleration_scaling_factor = 0.0
         move_action_goal.request.cartesian_speed_end_effector_link = end_effector

@@ -20,12 +20,12 @@ class MoveIt2Gripper(MoveIt2):
         open_gripper_joint_positions: List[float],
         closed_gripper_joint_positions: List[float],
         gripper_group_name: str = "gripper",
-        execute_via_moveit: bool = False,
+        execute_via_moveit: bool = True,
         ignore_new_calls_while_executing: bool = False,
         skip_planning: bool = False,
         skip_planning_fixed_motion_duration: float = 0.5,
         callback_group: Optional[CallbackGroup] = None,
-        follow_joint_trajectory_action_name: str = "gripper_trajectory_controller/follow_joint_trajectory",
+        follow_joint_trajectory_action_name: str = "/xarm_gripper/gripper_action",
     ):
         """
         Construct an instance of `MoveIt2Gripper` interface.
