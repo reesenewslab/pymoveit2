@@ -150,7 +150,7 @@ class GripperCommand:
         else:
             self.open(skip_if_noop=False)
 
-    def open(self, skip_if_noop: bool = True):
+    def open(self, skip_if_noop: bool = False):
         """
         Open the gripper.
         - `skip_if_noop` - No action will be performed if the gripper is already open.
@@ -165,7 +165,7 @@ class GripperCommand:
 
         self.__send_goal_async_gripper_command(self.__open_gripper_command_goal)
 
-    def close(self, skip_if_noop: bool = True):
+    def close(self, skip_if_noop: bool = False):
         """
         Close the gripper.
         - `skip_if_noop` - No action will be performed if the gripper is not open.
@@ -180,7 +180,7 @@ class GripperCommand:
 
         self.__send_goal_async_gripper_command(self.__close_gripper_command_goal)
 
-    def reset_open(self):
+    def reset_open(self, **kwargs):
         """
         Reset into open configuration by sending a dummy joint trajectory.
         This is useful for simulated robots that allow instantaneous reset of joints.
@@ -189,7 +189,7 @@ class GripperCommand:
         self.force_reset_executing_state()
         self.__send_goal_async_gripper_command(self.__open_gripper_command_goal)
 
-    def reset_closed(self):
+    def reset_closed(self, **kwargs):
         """
         Reset into closed configuration by sending a dummy joint trajectory.
         This is useful for simulated robots that allow instantaneous reset of joints.
@@ -207,7 +207,7 @@ class GripperCommand:
         self.__is_motion_requested = False
         self.__is_executing = False
 
-    def wait_until_executed(self):
+    def wait_until_executed(self) -> bool:
         """
         Wait until the previously requested motion is finalised through either a success or failure.
         """
@@ -216,10 +216,11 @@ class GripperCommand:
             self._node.get_logger().warn(
                 "Cannot wait until motion is executed (no motion is in progress)."
             )
-            return
+            return False
 
         while self.__is_motion_requested or self.__is_executing:
             self.__wait_until_executed_rate.sleep()
+        return True
 
     def __joint_state_callback(self, msg: JointState):
         # Update only if all relevant joints are included in the message
@@ -289,6 +290,10 @@ class GripperCommand:
         gripper_cmd_goal.command.max_effort = max_effort
 
         return gripper_cmd_goal
+
+    @property
+    def gripper_command_action_client(self) -> str:
+        return self.__gripper_command_action_client
 
     @property
     def joint_names(self) -> List[str]:
